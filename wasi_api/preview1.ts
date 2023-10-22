@@ -83,14 +83,14 @@ export class Arg {
 
 let args: Arg[];
 
-function args_get(env_p: Pointer, buf_p: Pointer): Errno {
+function args_get(arg_p: Pointer, buf_p: Pointer): Errno {
   debug.calls.push("args_get");
 
   const data = new DataView(memory.buffer);
   const buffer = new Uint8Array(memory.buffer);
   for (const a of args) {
-    data.setUint32(env_p, buf_p, true);
-    env_p += 4;
+    data.setUint32(arg_p, buf_p, true);
+    arg_p += 4;
 
     buffer.set(a.buffer, buf_p);
     buf_p += a.buffer.length;
@@ -203,7 +203,6 @@ function fd_write(
   switch (fd) {
     case Fd.Stdout:
       debug.stdout += str;
-      // return Errno.Notsup;
       console.log(str);
       break;
     case Fd.Stderr:
